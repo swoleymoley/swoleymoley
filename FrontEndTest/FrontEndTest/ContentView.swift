@@ -25,22 +25,27 @@ struct SuperCustomTextFieldStyle: TextFieldStyle {
 struct ContentView: View {
     //these are the variables hodling user input
     //im unsure how to make these global or accessible out this scope
-    @State private var weight = ""
-    @State private var reps = ""
-    @State private var sets = ""
+    @State private var bench_max = ""
+    @State private var squat_max = ""
+    @State private var deadlift_max = ""
     @State private var result = ""
     
     //declares a view
     var body: some View {
+        HStack{
+            Text("How much you lift bro?")
+            Text("")
+        }
         VStack{ //vertical stacking elements
             HStack{ //horiz stack of first two elements
-                Text("Weight:")
+                Text("Bench Max (lbs):")
         //textfield monitors user input live to debug console
-                TextField("enter weight", text: $weight,onEditingChanged: { (isBegin) in
+                TextField("enter you Bench Max", text: $bench_max,onEditingChanged: { (isBegin) in
             if isBegin {
                 print("Begins editing")
             } else {
                 print("Finishes editing")
+                
             }
         },
         onCommit: {
@@ -49,23 +54,24 @@ struct ContentView: View {
             }
         
             HStack{
-                Text("Reps:")
+                Text("Squat Max (lbs):")
             
-                TextField("enter reps", text: $reps, onCommit:{print("reps commited: " + reps)}).textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("enter you Squat Max", text: $squat_max, onCommit:{print("squat max commited: " + squat_max)}).textFieldStyle(RoundedBorderTextFieldStyle())
                 
             }
             
             HStack{
-                Text("Sets:")
+                Text("Deadlift Max (lbs):")
             //different style for demo
-            TextField("enter sets", text: $sets).textFieldStyle(RoundedBorderTextFieldStyle())
+            TextField("enter your Deadlift Max", text: $deadlift_max).textFieldStyle(RoundedBorderTextFieldStyle())
             }
             
             //heres to code for the calc button
             Button(action: {
                 // What to perform
                 print("I've been tapped")
-                //this is probably where you'll have grab the user input
+                result = String(Int(bench_max)! + Int(squat_max)! + Int(deadlift_max)!)
+                print(result)
             }) {
                 // How the button looks like
                 // the order of modifiers is important
