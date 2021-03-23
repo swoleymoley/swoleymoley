@@ -11,6 +11,89 @@
 
 import SwiftUI
 
+//csv stuff should be split into its own file
+class Workout {
+    var day: Int
+    var reps: Int
+    var sets: Int
+    var fractionOfMax: Float
+    var lift: String
+    var weekNumber: Int
+    var weight: Float
+    
+    init(day: Int, reps: Int, sets: Int, fractionOfMax: Float, lift: String, weekNumber: Int, weight: Float) {
+        self.day = day
+        self.reps = reps
+        self.sets = sets
+        self.fractionOfMax = fractionOfMax
+        self.lift = lift
+        self.weekNumber = weekNumber
+        self.weight = weight
+    }
+   
+}
+
+var workouts = [Workout]()
+
+func convertCSVIntoArray() {
+        //locate the file you want to use
+        guard let filepath = Bundle.main.path(forResource: "power_lift_template", ofType: "csv") else {
+            return
+        }
+        //convert that file into one long string
+        var data = ""
+        do {
+            data = try String(contentsOfFile: filepath)
+        } catch {
+            print(error)
+            return
+        }
+        //now split that string into an array of "rows" of data.  Each row is a string.
+        var rows = data.components(separatedBy: .newlines)
+        
+        //if you have a header row, remove it here
+        rows.removeFirst()
+        //now loop around each row, and split it into each of its columns
+        for row in rows {
+            let columns = row.components(separatedBy: ",")
+
+            //check that we have enough columns
+            if columns.count == 6 {
+                let day = Int(columns[0]) ?? 0
+                let reps = Int(columns[1]) ?? 0
+                let sets = Int(columns[2]) ?? 0
+                let fractionOfMax = Float(columns[3]) ?? 0
+                let lift = columns[4]
+                let weekNumber = Int(columns[5]) ?? 0
+
+                let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0 )
+                workouts.append(workout)
+            }
+        }
+    }
+
+struct Maxes {
+    var bench: Float
+    var deadLift: Float
+    var squat: Float
+    
+    var dictionary: [String: Float] {
+        return ["bench": bench,
+                "deadLift": deadLift,
+                "squat": squat]
+        }
+}
+
+func calculateWorkoutWeights(workouts: [Workout], maxes: Maxes) -> [Workout] {
+    let maxesDict = maxes.dictionary
+    for workout in workouts {
+        if workout.lift != "meet" {
+            workout.weight = workout.fractionOfMax * maxesDict[workout.lift]!
+        }
+    }
+    return workouts
+}
+
 //this function just styles the textfield
 struct SuperCustomTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<_Label>) -> some View {
