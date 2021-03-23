@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F2331498260991AD00CB476D /* power_lift_template.csv in Resources */ = {isa = PBXBuildFile; fileRef = F2331497260991AD00CB476D /* power_lift_template.csv */; };
 		FD8B7F5625E36D71007C7D4F /* FrontEndTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8B7F5525E36D71007C7D4F /* FrontEndTestApp.swift */; };
 		FD8B7F5825E36D71007C7D4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8B7F5725E36D71007C7D4F /* ContentView.swift */; };
 		FD8B7F5A25E36D72007C7D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD8B7F5925E36D72007C7D4F /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F2331497260991AD00CB476D /* power_lift_template.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = power_lift_template.csv; sourceTree = "<group>"; };
 		FD8B7F5225E36D71007C7D4F /* FrontEndTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrontEndTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD8B7F5525E36D71007C7D4F /* FrontEndTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontEndTestApp.swift; sourceTree = "<group>"; };
 		FD8B7F5725E36D71007C7D4F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +74,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F233149C260991B700CB476D /* ProgramTemplates */ = {
+			isa = PBXGroup;
+			children = (
+				F2331497260991AD00CB476D /* power_lift_template.csv */,
+			);
+			path = ProgramTemplates;
+			sourceTree = "<group>";
+		};
 		FD8B7F4925E36D71007C7D4F = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +105,7 @@
 		FD8B7F5425E36D71007C7D4F /* FrontEndTest */ = {
 			isa = PBXGroup;
 			children = (
+				F233149C260991B700CB476D /* ProgramTemplates */,
 				FD8B7F5525E36D71007C7D4F /* FrontEndTestApp.swift */,
 				FD8B7F5725E36D71007C7D4F /* ContentView.swift */,
 				FD8B7F5925E36D72007C7D4F /* Assets.xcassets */,
@@ -235,6 +246,7 @@
 			files = (
 				FD8B7F5D25E36D72007C7D4F /* Preview Assets.xcassets in Resources */,
 				FD8B7F5A25E36D72007C7D4F /* Assets.xcassets in Resources */,
+				F2331498260991AD00CB476D /* power_lift_template.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

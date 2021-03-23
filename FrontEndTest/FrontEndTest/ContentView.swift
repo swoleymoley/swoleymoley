@@ -154,7 +154,12 @@ struct ContentView: View {
                 // What to perform
                 print("I've been tapped")
                 result = String(Int(bench_max)! + Int(squat_max)! + Int(deadlift_max)!)
-                print(result)
+                let maxes = Maxes(bench: Float(bench_max)!, deadLift: Float(deadlift_max)!, squat: Float(squat_max)!)
+                convertCSVIntoArray()
+                workouts = calculateWorkoutWeights(workouts: workouts, maxes: maxes)
+                for workout in workouts{
+                    print(workout.day, workout.lift, workout.weight)
+                }
             }) {
                 // How the button looks like
                 // the order of modifiers is important
