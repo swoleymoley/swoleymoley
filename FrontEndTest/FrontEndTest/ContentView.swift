@@ -10,6 +10,9 @@
 //
 
 import SwiftUI
+import Foundation
+import EventKit
+
 
 //csv stuff should be split into its own file
 class Workout {
@@ -19,8 +22,8 @@ class Workout {
     var fractionOfMax: Float
     var lift: String
     var weekNumber: Int
-    var weight: Float? = 0.0
-    var date: Date? = nil
+    var weight: Float
+    var date: Date
     
     init(day: Int, reps: Int, sets: Int, fractionOfMax: Float, lift: String, weekNumber: Int, weight: Float, date: Date) {
         self.day = day
@@ -43,7 +46,31 @@ class Workout {
         var dayComponent = DateComponents()
         dayComponent.day = self.day
         let theCalendar = Calendar.current
-        self.date = theCalendar.date(byAdding: dayComponent, to: startDate)
+        self.date = theCalendar.date(byAdding: dayComponent, to: startDate)!
+    }
+    
+    func addWorkoutToCalendar(completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
+        let eventStore = EKEventStore()
+
+        eventStore.requestAccess(to: .event, completion: { (granted, error) in
+            if (granted) && (error == nil) {
+                let event = EKEvent(eventStore: eventStore)
+                event.title = "SwoleyMoley Workout: " + self.lift
+                event.startDate = self.date
+                event.endDate = self.date
+                event.notes = self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps "
+                event.calendar = eventStore.defaultCalendarForNewEvents
+                do {
+                    try eventStore.save(event, span: .thisEvent)
+                } catch let e as NSError {
+                    completion?(false, e)
+                    return
+                }
+                completion?(true, nil)
+            } else {
+                completion?(false, error as NSError?)
+            }
+        })
     }
    
 }
@@ -84,6 +111,7 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [W
                 let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0, date: Date(timeIntervalSince1970: 0))
                 workout.setWorkoutDate(startDate: startDate)
                 workout.setWorkoutWeight(maxesDict: maxesDict)
+                workout.addWorkoutToCalendar()
                 workouts.append(workout)
             }
         }
@@ -189,6 +217,7 @@ struct ContentView: View {
                 for workout in workouts{
                     print(workout.day, workout.lift, workout.weight, workout.day, workout.date)
                 }
+                result = "Workout generated! Check that Calendar"
             }) {
                 // How the button looks like
                 // the order of modifiers is important
@@ -207,7 +236,6 @@ struct ContentView: View {
             }
             
             HStack{
-                Text("Result:")
                 Text(result)
             }
             
