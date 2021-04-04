@@ -49,6 +49,10 @@ class Workout {
         self.date = theCalendar.date(byAdding: dayComponent, to: startDate)!
     }
     
+    func getWorkoutDescription() -> String{
+        return self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps\n View on swoleymoley://open"
+    }
+    
     func addWorkoutToCalendar(completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
         let eventStore = EKEventStore()
 
@@ -58,7 +62,7 @@ class Workout {
                 event.title = "SwoleyMoley Workout: " + self.lift
                 event.startDate = self.date
                 event.endDate = self.date
-                event.notes = self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps "
+                event.notes = self.getWorkoutDescription()
                 event.calendar = eventStore.defaultCalendarForNewEvents
                 do {
                     try eventStore.save(event, span: .thisEvent)
@@ -73,6 +77,32 @@ class Workout {
         })
     }
    
+}
+
+func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
+    let eventStore = EKEventStore()
+
+    eventStore.requestAccess(to: .event, completion: { (granted, error) in
+        if (granted) && (error == nil) {
+            for workout in workouts {
+                let event = EKEvent(eventStore: eventStore)
+                event.title = "SwoleyMoley Workout: " + workout.lift
+                event.startDate = workout.date
+                event.endDate = workout.date
+                event.notes = workout.getWorkoutDescription()
+                event.calendar = eventStore.defaultCalendarForNewEvents
+                do {
+                    try eventStore.save(event, span: .thisEvent)
+                } catch let e as NSError {
+                    completion?(false, e)
+                    return
+                }
+                completion?(true, nil)
+            }
+        } else {
+            completion?(false, error as NSError?)
+        }
+    })
 }
 
 func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [Workout] {
@@ -111,7 +141,7 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [W
                 let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0, date: Date(timeIntervalSince1970: 0))
                 workout.setWorkoutDate(startDate: startDate)
                 workout.setWorkoutWeight(maxesDict: maxesDict)
-                workout.addWorkoutToCalendar()
+                //workout.addWorkoutToCalendar()
                 workouts.append(workout)
             }
         }
@@ -213,7 +243,7 @@ struct ContentView: View {
                     maxes: maxes,
                     startDate: startDate
                 )
-        
+                addWorkoutsToCalendar(workouts: workouts)
                 for workout in workouts{
                     print(workout.day, workout.lift, workout.weight, workout.day, workout.date)
                 }
