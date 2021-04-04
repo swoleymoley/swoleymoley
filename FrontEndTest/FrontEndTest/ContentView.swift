@@ -19,9 +19,10 @@ class Workout {
     var fractionOfMax: Float
     var lift: String
     var weekNumber: Int
-    var weight: Float
+    var weight: Float? = 0.0
+    var date: Date? = nil
     
-    init(day: Int, reps: Int, sets: Int, fractionOfMax: Float, lift: String, weekNumber: Int, weight: Float) {
+    init(day: Int, reps: Int, sets: Int, fractionOfMax: Float, lift: String, weekNumber: Int, weight: Float, date: Date) {
         self.day = day
         self.reps = reps
         self.sets = sets
@@ -29,16 +30,30 @@ class Workout {
         self.lift = lift
         self.weekNumber = weekNumber
         self.weight = weight
+        self.date = date
+    }
+    
+    func setWorkoutWeight(maxesDict: [String: Float]) {
+        if self.lift != "meet" {
+            self.weight = self.fractionOfMax * maxesDict[self.lift]!
+        }
+    }
+
+    func setWorkoutDate(startDate: Date) {
+        var dayComponent = DateComponents()
+        dayComponent.day = self.day
+        let theCalendar = Calendar.current
+        self.date = theCalendar.date(byAdding: dayComponent, to: startDate)
     }
    
 }
 
-var workouts = [Workout]()
-
-func convertCSVIntoArray() {
+func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [Workout] {
+    var workouts = [Workout]()
+    let maxesDict = maxes.dictionary
         //locate the file you want to use
         guard let filepath = Bundle.main.path(forResource: "power_lift_template", ofType: "csv") else {
-            return
+            return workouts
         }
         //convert that file into one long string
         var data = ""
@@ -46,7 +61,7 @@ func convertCSVIntoArray() {
             data = try String(contentsOfFile: filepath)
         } catch {
             print(error)
-            return
+            return workouts
         }
         //now split that string into an array of "rows" of data.  Each row is a string.
         var rows = data.components(separatedBy: .newlines)
@@ -66,10 +81,13 @@ func convertCSVIntoArray() {
                 let lift = columns[4]
                 let weekNumber = Int(columns[5]) ?? 0
 
-                let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0 )
+                let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0, date: Date(timeIntervalSince1970: 0))
+                workout.setWorkoutDate(startDate: startDate)
+                workout.setWorkoutWeight(maxesDict: maxesDict)
                 workouts.append(workout)
             }
         }
+    return workouts
     }
 
 struct Maxes {
@@ -84,15 +102,18 @@ struct Maxes {
         }
 }
 
-func calculateWorkoutWeights(workouts: [Workout], maxes: Maxes) -> [Workout] {
-    let maxesDict = maxes.dictionary
-    for workout in workouts {
-        if workout.lift != "meet" {
-            workout.weight = workout.fractionOfMax * maxesDict[workout.lift]!
-        }
-    }
-    return workouts
-}
+//func calculateWorkoutWeight(workouts: [Workout], maxes: Maxes) -> [Workout] {
+//    let maxesDict = maxes.dictionary
+//    for workout in workouts {
+//        if workout.lift != "meet" {
+//            workout.weight = workout.fractionOfMax * maxesDict[workout.lift]!
+//        }
+//    }
+//    return workouts
+//}
+
+
+    
 
 //this function just styles the textfield
 struct SuperCustomTextFieldStyle: TextFieldStyle {
@@ -102,6 +123,7 @@ struct SuperCustomTextFieldStyle: TextFieldStyle {
             .border(Color.accentColor)
     }
 }
+
 
 
 //this is where its happening
@@ -155,10 +177,17 @@ struct ContentView: View {
                 print("I've been tapped")
                 result = String(Int(bench_max)! + Int(squat_max)! + Int(deadlift_max)!)
                 let maxes = Maxes(bench: Float(bench_max)!, deadLift: Float(deadlift_max)!, squat: Float(squat_max)!)
-                convertCSVIntoArray()
-                workouts = calculateWorkoutWeights(workouts: workouts, maxes: maxes)
+                
+                // delete once we have a date picker
+                let startDate = Date()
+                
+                var workouts = convertTemplateCSVIntoArrayOfWorkouts(
+                    maxes: maxes,
+                    startDate: startDate
+                )
+        
                 for workout in workouts{
-                    print(workout.day, workout.lift, workout.weight)
+                    print(workout.day, workout.lift, workout.weight, workout.day, workout.date)
                 }
             }) {
                 // How the button looks like
