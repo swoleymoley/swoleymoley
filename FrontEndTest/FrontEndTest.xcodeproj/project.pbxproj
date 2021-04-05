@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F2331498260991AD00CB476D /* power_lift_template.csv in Resources */ = {isa = PBXBuildFile; fileRef = F2331497260991AD00CB476D /* power_lift_template.csv */; };
+		F239E6BE261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */; };
 		FD8B7F5625E36D71007C7D4F /* FrontEndTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8B7F5525E36D71007C7D4F /* FrontEndTestApp.swift */; };
 		FD8B7F5825E36D71007C7D4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8B7F5725E36D71007C7D4F /* ContentView.swift */; };
 		FD8B7F5A25E36D72007C7D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD8B7F5925E36D72007C7D4F /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		F2331497260991AD00CB476D /* power_lift_template.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = power_lift_template.csv; sourceTree = "<group>"; };
+		F239E6BD261AB1CF00C6C9A9 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FD8B7F5225E36D71007C7D4F /* FrontEndTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrontEndTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD8B7F5525E36D71007C7D4F /* FrontEndTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrontEndTestApp.swift; sourceTree = "<group>"; };
 		FD8B7F5725E36D71007C7D4F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		FD8B7F4925E36D71007C7D4F = {
 			isa = PBXGroup;
 			children = (
+				F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */,
 				FD8B7F5425E36D71007C7D4F /* FrontEndTest */,
 				FD8B7F6625E36D72007C7D4F /* FrontEndTestTests */,
 				FD8B7F7125E36D72007C7D4F /* FrontEndTestUITests */,
@@ -273,6 +276,7 @@
 			files = (
 				FD8B7F5825E36D71007C7D4F /* ContentView.swift in Sources */,
 				FD8B7F5625E36D71007C7D4F /* FrontEndTestApp.swift in Sources */,
+				F239E6BE261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +590,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F239E6BD261AB1CF00C6C9A9 /* Model.xcdatamodel */,
+			);
+			currentVersion = F239E6BD261AB1CF00C6C9A9 /* Model.xcdatamodel */;
+			path = SwoleyMoleyDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = FD8B7F4A25E36D71007C7D4F /* Project object */;
 }
