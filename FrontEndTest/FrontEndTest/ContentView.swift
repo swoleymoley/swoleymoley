@@ -12,6 +12,7 @@
 import SwiftUI
 import Foundation
 import EventKit
+import CoreData
 
 
 //csv stuff should be split into its own file
@@ -105,8 +106,8 @@ func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _
     })
 }
 
-func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [Workout] {
-    var workouts = [Workout]()
+func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Dorkout] {
+    var workouts = [Dorkout]()
     let maxesDict = maxes.dictionary
         //locate the file you want to use
         guard let filepath = Bundle.main.path(forResource: "power_lift_template", ofType: "csv") else {
@@ -131,16 +132,22 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date)  -> [W
 
             //check that we have enough columns
             if columns.count == 6 {
-                let day = Int(columns[0]) ?? 0
-                let reps = Int(columns[1]) ?? 0
-                let sets = Int(columns[2]) ?? 0
+                let day = Int16(columns[0]) ?? 0
+                let reps = Int16(columns[1]) ?? 0
+                let sets = Int16(columns[2]) ?? 0
                 let fractionOfMax = Float(columns[3]) ?? 0
                 let lift = columns[4]
-                let weekNumber = Int(columns[5]) ?? 0
+                let weekNumber = Int16(columns[5]) ?? 0
 
-                let workout = Workout(day: day, reps: reps, sets: sets, fractionOfMax: fractionOfMax, lift: lift, weekNumber: weekNumber, weight: 0.0, date: Date(timeIntervalSince1970: 0))
-                workout.setWorkoutDate(startDate: startDate)
-                workout.setWorkoutWeight(maxesDict: maxesDict)
+                let workout = Dorkout(context: moc)
+                workout.day = day
+                workout.reps = reps
+                workout.sets = sets
+                workout.fractionOfMax = fractionOfMax
+                workout.lift = lift
+                workout.weekNumber = weekNumber
+                //workout.setWorkoutDate(startDate: startDate)
+                //workout.setWorkoutWeight(maxesDict: maxesDict)
                 //workout.addWorkoutToCalendar()
                 workouts.append(workout)
             }
@@ -192,7 +199,8 @@ struct ContentView: View {
     @State private var squat_max = ""
     @State private var deadlift_max = ""
     @State private var result = ""
-    
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.managedObjectContext) var managedObjectContext
     //declares a view
     var body: some View {
         HStack{
@@ -241,9 +249,10 @@ struct ContentView: View {
                 
                 var workouts = convertTemplateCSVIntoArrayOfWorkouts(
                     maxes: maxes,
-                    startDate: startDate
+                    startDate: startDate,
+                    moc: managedObjectContext
                 )
-                addWorkoutsToCalendar(workouts: workouts)
+                //addWorkoutsToCalendar(workouts: workouts)
                 for workout in workouts{
                     print(workout.day, workout.lift, workout.weight, workout.day, workout.date)
                 }

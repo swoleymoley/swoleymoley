@@ -8,9 +8,10 @@
         <attribute name="lift" optional="YES" attributeType="String"/>
         <attribute name="reps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="sets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weekNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Dorkout" positionX="-54" positionY="-9" width="128" height="163"/>
+        <element name="Dorkout" positionX="-54" positionY="-9" width="128" height="178"/>
     </elements>
 </model>

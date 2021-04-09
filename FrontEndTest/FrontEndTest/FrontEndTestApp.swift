@@ -10,19 +10,14 @@ import CoreData
 
 @main
 struct FrontEndTestApp: App {
-    let persistentContainer: NSPersistentContainer = {
-          let container = NSPersistentContainer(name: "SwoleyMoleyDataModel")
-          container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-              if let error = error as NSError? {
-                  fatalError("Unresolved error \(error), \(error.userInfo)")
-              }
-          })
-          return container
-      }()
-
+    let persistenceController = PersistenceController.shared
+    @Environment(\.scenePhase) var scenePhase
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(\.managedObjectContext, persistenceController.container.viewContext)
+        }
+        .onChange(of: scenePhase) { _ in
+            persistenceController.save()
         }
     }
 }
