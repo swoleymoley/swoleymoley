@@ -163,7 +163,9 @@ struct Maxes {
     var dictionary: [String: Float] {
         return ["bench": bench,
                 "deadLift": deadLift,
-                "squat": squat]
+                "squat": squat,
+                "none": 0.0
+        ]
         }
 }
 
@@ -179,7 +181,6 @@ struct Maxes {
 
 
     
-
 //this function just styles the textfield
 struct SuperCustomTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<_Label>) -> some View {
