@@ -12,15 +12,15 @@ import EventKit
 
 extension Workout {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Workout> {
+    @nonobjc public class func createFetchRequest() -> NSFetchRequest<Workout> {
         return NSFetchRequest<Workout>(entityName: "Workout")
     }
 
-    @NSManaged public var date: Date?
+    @NSManaged public var date: Date
     @NSManaged public var day: Int16
     @NSManaged public var fractionOfMax: Float
-    @NSManaged public var workout_id: String?
-    @NSManaged public var program_id: String?
+    @NSManaged public var workout_id: String
+    @NSManaged public var program_id: String
     @NSManaged public var lift: String
     @NSManaged public var reps: Int16
     @NSManaged public var sets: Int16

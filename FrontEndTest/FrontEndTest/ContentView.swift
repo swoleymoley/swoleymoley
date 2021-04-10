@@ -89,9 +89,51 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: N
                 //workout.addWorkoutToCalendar()
                 workouts.append(workout)
             }
+            // save newly created workout objects
+            do {
+                try moc.save()
+            } catch {
+                fatalError("Failure to save context: \(error)")
+            }
         }
     return workouts
     }
+
+func fetchWorkoutsFromCoreData(moc: NSManagedObjectContext)  -> [Workout] {
+    let workoutsFetch = Workout.createFetchRequest()
+
+    do {
+        let fetchedWorkouts = try moc.fetch(workoutsFetch)
+        return fetchedWorkouts
+    } catch {
+        fatalError("Failed to fetch workouts: \(error)")
+    }
+}
+
+func fetchWorkoutFromCoreDataByWorkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Workout {
+    let workoutsFetch = Workout.createFetchRequest()
+    workoutsFetch.predicate = NSPredicate(format: "workout_id == %@", workoutId)
+    do {
+        let fetchedWorkouts = try moc.fetch(workoutsFetch)
+        return fetchedWorkouts[0]
+    } catch {
+        fatalError("Failed to fetch workouts: \(error)")
+    }
+}
+
+//func loadSavedData() {
+//    let request = Workout.createFetchRequest()
+//    let sort = NSSortDescriptor(key: "date", ascending: false)
+//    request.sortDescriptors = [sort]
+//
+//    do {
+//        commits = try container.viewContext.fetch(request)
+//        print("Got \(commits.count) commits")
+//        tableView.reloadData()
+//    } catch {
+//        print("Fetch failed")
+//    }
+//}
 
 struct Maxes {
     var bench: Float
@@ -180,9 +222,15 @@ struct ContentView: View {
                     startDate: startDate,
                     moc: managedObjectContext
                 )
-                //addWorkoutsToCalendar(workouts: workouts)
+                // if we want to fetch saved workouts use this!
+                //var workouts = fetchWorkoutsFromCoreData(moc: managedObjectContext)
+                
+                //if we want to fetch a workout by its id use this
+                //let workout = fetchWorkoutFromCoreDataByWorkoutId(moc: managedObjectContext, workoutId: "98187587-E8F0-418D-A41C-ADCAF03DB8E1")
+        
+                addWorkoutsToCalendar(workouts: workouts)
                 for workout in workouts{
-                    print(workout.day, workout.lift, workout.weight, workout.day, workout.date)
+                    print(workout.day, workout.lift, workout.weight, workout.day, workout.date, workout.workout_id)
                 }
                 result = "Workout generated! Check that Calendar"
             }) {
