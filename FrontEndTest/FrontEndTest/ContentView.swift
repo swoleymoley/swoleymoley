@@ -146,8 +146,8 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: N
                 workout.fractionOfMax = fractionOfMax
                 workout.lift = lift
                 workout.weekNumber = weekNumber
-                //workout.setWorkoutDate(startDate: startDate)
-                //workout.setWorkoutWeight(maxesDict: maxesDict)
+                workout.setWorkoutDate(startDate: startDate)
+                workout.setWorkoutWeight(maxesDict: maxesDict)
                 //workout.addWorkoutToCalendar()
                 workouts.append(workout)
             }

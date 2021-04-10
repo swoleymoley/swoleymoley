@@ -28,7 +28,8 @@ extension Dorkout {
     
     func setWorkoutWeight(maxesDict: [String: Float]) {
         if self.lift != "meet" {
-            self.weight = self.fractionOfMax ?? 0.0 * maxesDict[self.lift ?? "none"] ?? 0.0
+            let max_weight = maxesDict[self.lift] ?? 0.0
+            self.weight = self.fractionOfMax * max_weight
         }
     }
 
@@ -50,7 +51,7 @@ extension Dorkout {
         eventStore.requestAccess(to: .event, completion: { (granted, error) in
             if (granted) && (error == nil) {
                 let event = EKEvent(eventStore: eventStore)
-                event.title = "SwoleyMoley Workout: " + self.lift ?? String("")
+                event.title = "SwoleyMoley Workout: " + self.lift
                 event.startDate = self.date
                 event.endDate = self.date
                 event.notes = self.getWorkoutDescription()
