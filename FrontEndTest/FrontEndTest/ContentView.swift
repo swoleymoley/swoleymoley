@@ -15,71 +15,6 @@ import EventKit
 import CoreData
 
 
-//csv stuff should be split into its own file
-class Workout {
-    var day: Int
-    var reps: Int
-    var sets: Int
-    var fractionOfMax: Float
-    var lift: String
-    var weekNumber: Int
-    var weight: Float
-    var date: Date
-    
-    init(day: Int, reps: Int, sets: Int, fractionOfMax: Float, lift: String, weekNumber: Int, weight: Float, date: Date) {
-        self.day = day
-        self.reps = reps
-        self.sets = sets
-        self.fractionOfMax = fractionOfMax
-        self.lift = lift
-        self.weekNumber = weekNumber
-        self.weight = weight
-        self.date = date
-    }
-    
-    func setWorkoutWeight(maxesDict: [String: Float]) {
-        if self.lift != "meet" {
-            self.weight = self.fractionOfMax * maxesDict[self.lift]!
-        }
-    }
-
-    func setWorkoutDate(startDate: Date) {
-        var dayComponent = DateComponents()
-        dayComponent.day = self.day
-        let theCalendar = Calendar.current
-        self.date = theCalendar.date(byAdding: dayComponent, to: startDate)!
-    }
-    
-    func getWorkoutDescription() -> String{
-        return self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps\n View on swoleymoley://open"
-    }
-    
-    func addWorkoutToCalendar(completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
-        let eventStore = EKEventStore()
-
-        eventStore.requestAccess(to: .event, completion: { (granted, error) in
-            if (granted) && (error == nil) {
-                let event = EKEvent(eventStore: eventStore)
-                event.title = "SwoleyMoley Workout: " + self.lift
-                event.startDate = self.date
-                event.endDate = self.date
-                event.notes = self.getWorkoutDescription()
-                event.calendar = eventStore.defaultCalendarForNewEvents
-                do {
-                    try eventStore.save(event, span: .thisEvent)
-                } catch let e as NSError {
-                    completion?(false, e)
-                    return
-                }
-                completion?(true, nil)
-            } else {
-                completion?(false, error as NSError?)
-            }
-        })
-    }
-   
-}
-
 func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
     let eventStore = EKEventStore()
 
@@ -106,8 +41,8 @@ func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _
     })
 }
 
-func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Dorkout] {
-    var workouts = [Dorkout]()
+func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Workout] {
+    var workouts = [Workout]()
     let program_id = UUID().uuidString
     let maxesDict = maxes.dictionary
         //locate the file you want to use
@@ -140,7 +75,7 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: N
                 let lift = columns[4]
                 let weekNumber = Int16(columns[5]) ?? 0
 
-                let workout = Dorkout(context: moc)
+                let workout = Workout(context: moc)
                 workout.program_id = program_id
                 workout.workout_id = UUID().uuidString
                 workout.day = day
@@ -171,17 +106,6 @@ struct Maxes {
         ]
         }
 }
-
-//func calculateWorkoutWeight(workouts: [Workout], maxes: Maxes) -> [Workout] {
-//    let maxesDict = maxes.dictionary
-//    for workout in workouts {
-//        if workout.lift != "meet" {
-//            workout.weight = workout.fractionOfMax * maxesDict[workout.lift]!
-//        }
-//    }
-//    return workouts
-//}
-
 
     
 //this function just styles the textfield

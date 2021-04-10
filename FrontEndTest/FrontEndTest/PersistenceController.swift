@@ -21,7 +21,7 @@ struct PersistenceController {
 
         // Create 10 example programming languages.
         for _ in 0..<10 {
-            let language = Dorkout(context: controller.container.viewContext)
+            let language = Workout(context: controller.container.viewContext)
             language.lift = "Warmup"
         }
 

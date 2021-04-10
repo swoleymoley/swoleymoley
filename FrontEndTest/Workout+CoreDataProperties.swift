@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 import EventKit
 
-extension Dorkout {
+extension Workout {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Dorkout> {
-        return NSFetchRequest<Dorkout>(entityName: "Dorkout")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Workout> {
+        return NSFetchRequest<Workout>(entityName: "Workout")
     }
 
     @NSManaged public var date: Date?
@@ -72,6 +72,6 @@ extension Dorkout {
 
 }
 
-extension Dorkout : Identifiable {
+extension Workout : Identifiable {
 
 }
