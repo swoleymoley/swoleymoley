@@ -4,14 +4,15 @@
         <attribute name="date" optional="YES" attributeType="Date" defaultDateTimeInterval="-978278400" usesScalarValueType="NO"/>
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="fractionOfMax" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" defaultValueString="None"/>
         <attribute name="lift" optional="YES" attributeType="String" defaultValueString="none"/>
+        <attribute name="program_id" optional="YES" attributeType="String"/>
         <attribute name="reps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="sets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weekNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="workout_id" optional="YES" attributeType="String" defaultValueString="None"/>
     </entity>
     <elements>
-        <element name="Dorkout" positionX="-54" positionY="-9" width="128" height="178"/>
+        <element name="Dorkout" positionX="-54" positionY="-9" width="128" height="193"/>
     </elements>
 </model>

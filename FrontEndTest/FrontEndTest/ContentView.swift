@@ -108,6 +108,7 @@ func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _
 
 func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Dorkout] {
     var workouts = [Dorkout]()
+    let program_id = UUID().uuidString
     let maxesDict = maxes.dictionary
         //locate the file you want to use
         guard let filepath = Bundle.main.path(forResource: "power_lift_template", ofType: "csv") else {
@@ -140,6 +141,8 @@ func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: N
                 let weekNumber = Int16(columns[5]) ?? 0
 
                 let workout = Dorkout(context: moc)
+                workout.program_id = program_id
+                workout.workout_id = UUID().uuidString
                 workout.day = day
                 workout.reps = reps
                 workout.sets = sets

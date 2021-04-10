@@ -19,7 +19,8 @@ extension Dorkout {
     @NSManaged public var date: Date?
     @NSManaged public var day: Int16
     @NSManaged public var fractionOfMax: Float
-    @NSManaged public var id: String?
+    @NSManaged public var workout_id: String?
+    @NSManaged public var program_id: String?
     @NSManaged public var lift: String
     @NSManaged public var reps: Int16
     @NSManaged public var sets: Int16
