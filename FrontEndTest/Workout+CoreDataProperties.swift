@@ -42,7 +42,7 @@ extension Workout {
     }
     
     func getWorkoutDescription() -> String{
-        let description = String(self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps\n View on swoleymoley://open")
+        let description = String(self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps\n View on swoleymoley://workout_id?" + self.workout_id)
         return description
     }
     

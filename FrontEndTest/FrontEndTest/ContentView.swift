@@ -110,30 +110,30 @@ func fetchWorkoutsFromCoreData(moc: NSManagedObjectContext)  -> [Workout] {
     }
 }
 
-func fetchWorkoutFromCoreDataByWorkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Workout {
+func fetchWorkoutFromCoreDataByWorkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Workout? {
     let workoutsFetch = Workout.createFetchRequest()
     workoutsFetch.predicate = NSPredicate(format: "workout_id == %@", workoutId)
     do {
         let fetchedWorkouts = try moc.fetch(workoutsFetch)
+        print(fetchedWorkouts)
+        if fetchedWorkouts.isEmpty {
+            return nil
+        } else {
         return fetchedWorkouts[0]
+        }
     } catch {
         fatalError("Failed to fetch workouts: \(error)")
     }
 }
 
-//func loadSavedData() {
-//    let request = Workout.createFetchRequest()
-//    let sort = NSSortDescriptor(key: "date", ascending: false)
-//    request.sortDescriptors = [sort]
-//
-//    do {
-//        commits = try container.viewContext.fetch(request)
-//        print("Got \(commits.count) commits")
-//        tableView.reloadData()
-//    } catch {
-//        print("Fetch failed")
-//    }
-//}
+
+func fetchWorkoutFromURLQuery(moc: NSManagedObjectContext, url: URL) -> Workout? {
+    let workout = fetchWorkoutFromCoreDataByWorkoutId(
+        moc: moc,
+        workoutId: url.query ?? "none"
+    ) ?? nil
+    return workout
+}
 
 struct Maxes {
     var bench: Float
@@ -163,6 +163,7 @@ struct SuperCustomTextFieldStyle: TextFieldStyle {
 
 //this is where its happening
 struct ContentView: View {
+    @Binding var launchURL: URL
     //these are the variables hodling user input
     //im unsure how to make these global or accessible out this scope
     @State private var bench_max = ""
@@ -211,8 +212,11 @@ struct ContentView: View {
             Button(action: {
                 // What to perform
                 print("I've been tapped")
-                result = String(Int(bench_max)! + Int(squat_max)! + Int(deadlift_max)!)
-                let maxes = Maxes(bench: Float(bench_max)!, deadLift: Float(deadlift_max)!, squat: Float(squat_max)!)
+                let maxes = Maxes(
+                    bench: Float(bench_max) ?? 0.0,
+                    deadLift: Float(deadlift_max) ?? 0.0,
+                    squat: Float(squat_max) ?? 0.0
+                )
                 
                 // delete once we have a date picker
                 let startDate = Date()
@@ -262,7 +266,7 @@ struct ContentView: View {
 //this is the previewer code
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(launchURL: .constant(URL(fileURLWithPath: "https://exampleplaceholder.com")))
     }
 }
 
