@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F2211BF8261FD7B800A2F6B1 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211BF7261FD7B800A2F6B1 /* PersistenceController.swift */; };
-		F2211C04261FDBD200A2F6B1 /* Workout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211C02261FDBD200A2F6B1 /* Workout+CoreDataClass.swift */; };
+		F2211C04261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */; };
 		F2211C05261FDBD200A2F6B1 /* Workout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211C03261FDBD200A2F6B1 /* Workout+CoreDataProperties.swift */; };
 		F2331498260991AD00CB476D /* power_lift_template.csv in Resources */ = {isa = PBXBuildFile; fileRef = F2331497260991AD00CB476D /* power_lift_template.csv */; };
 		F239E6BE261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */; };
@@ -39,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		F2211BF7261FD7B800A2F6B1 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		F2211C02261FDBD200A2F6B1 /* Workout+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataClass.swift"; sourceTree = "<group>"; };
+		F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F2211C03261FDBD200A2F6B1 /* Workout+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workout+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F2331497260991AD00CB476D /* power_lift_template.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = power_lift_template.csv; sourceTree = "<group>"; };
 		F239E6BD261AB1CF00C6C9A9 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		FD8B7F4925E36D71007C7D4F = {
 			isa = PBXGroup;
 			children = (
-				F2211C02261FDBD200A2F6B1 /* Workout+CoreDataClass.swift */,
+				F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */,
 				F2211C03261FDBD200A2F6B1 /* Workout+CoreDataProperties.swift */,
 				F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */,
 				FD8B7F5425E36D71007C7D4F /* FrontEndTest */,
@@ -284,7 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2211C05261FDBD200A2F6B1 /* Workout+CoreDataProperties.swift in Sources */,
-				F2211C04261FDBD200A2F6B1 /* Workout+CoreDataClass.swift in Sources */,
+				F2211C04261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift in Sources */,
 				FD8B7F5825E36D71007C7D4F /* ContentView.swift in Sources */,
 				F2211BF8261FD7B800A2F6B1 /* PersistenceController.swift in Sources */,
 				FD8B7F5625E36D71007C7D4F /* FrontEndTestApp.swift in Sources */,
