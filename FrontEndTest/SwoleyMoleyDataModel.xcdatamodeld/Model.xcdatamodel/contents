@@ -5,6 +5,7 @@
         <attribute name="day" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="fractionOfMax" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="lift" attributeType="String" defaultValueString="none"/>
+        <attribute name="needsWarmups" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="programId" attributeType="String"/>
         <attribute name="reps" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="sets" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -13,6 +14,6 @@
         <attribute name="workoutId" attributeType="String" defaultValueString="None"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-54" positionY="-9" width="128" height="193"/>
+        <element name="Exercise" positionX="-54" positionY="-9" width="128" height="208"/>
     </elements>
 </model>

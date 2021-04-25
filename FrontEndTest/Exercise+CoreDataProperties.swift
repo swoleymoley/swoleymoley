@@ -26,6 +26,7 @@ extension Exercise {
     @NSManaged public var sets: Int16
     @NSManaged public var weight: Float
     @NSManaged public var weekNumber: Int16
+    @NSManaged public var needsWarmups: Bool
     
     func setExerciseWeight(maxesDict: [String: Float]) {
         if self.lift != "meet" {
@@ -42,7 +43,7 @@ extension Exercise {
     }
     
     func getExerciseDescription() -> String{
-        let description = String(self.lift + " day!\n" + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + " reps\n View on swoleymoley://workout_id?" + self.workoutId)
+        let description = (String(self.lift) + ": " + String(self.weight) + " lbs for " + String(self.sets) + " sets of " + String(self.reps) + "\n")
         return description
     }
     
