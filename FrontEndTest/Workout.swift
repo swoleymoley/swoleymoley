@@ -20,6 +20,12 @@ class Workout {
         self.workoutId = workoutId
         self.date = exercises[0].date
         self.exercisesWithWarmups = Workout.getExercisesWithWarmups(exercises: exercises, moc: moc)
+        // save newly generated warmup exercises
+        do {
+            try moc.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
+        }
     };
     
     static func generateWarmupsForExercise(exercise: Exercise, moc: NSManagedObjectContext) -> [Exercise] {
