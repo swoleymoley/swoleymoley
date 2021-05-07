@@ -14,136 +14,135 @@ import Foundation
 import EventKit
 import CoreData
 
-
-func addWorkoutsToCalendar(workouts: [Workout], completion: ((_ success: Bool, _ error: NSError?) -> Void)? = nil) {
-    let eventStore = EKEventStore()
-
-    eventStore.requestAccess(to: .event, completion: { (granted, error) in
-        if (granted) && (error == nil) {
-            for workout in workouts {
-                let event = EKEvent(eventStore: eventStore)
-                event.title = "SwoleyMoley Workout: " + workout.lift
-                event.startDate = workout.date
-                event.endDate = workout.date
-                event.notes = workout.getWorkoutDescription()
-                event.calendar = eventStore.defaultCalendarForNewEvents
-                do {
-                    try eventStore.save(event, span: .thisEvent)
-                } catch let e as NSError {
-                    completion?(false, e)
-                    return
-                }
-                completion?(true, nil)
-            }
-        } else {
-            completion?(false, error as NSError?)
-        }
-    })
-}
-
-func convertTemplateCSVIntoArrayOfWorkouts(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Workout] {
-    var workouts = [Workout]()
-    let program_id = UUID().uuidString
+func convertTemplateCSVIntoArrayOfExercises(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Exercise] {
+    var exercises = [Exercise]()
+    let programId = UUID().uuidString
     let maxesDict = maxes.dictionary
         //locate the file you want to use
         guard let filepath = Bundle.main.path(forResource: "power_lift_template", ofType: "csv") else {
-            return workouts
+            return exercises
         }
-        //convert that file into one long string
+        //convert file into one long string
         var data = ""
         do {
             data = try String(contentsOfFile: filepath)
         } catch {
             print(error)
-            return workouts
+            return exercises
         }
-        //now split that string into an array of "rows" of data.  Each row is a string.
+        //string into an array of "rows" of data.  Each row is a string.
         var rows = data.components(separatedBy: .newlines)
-        
-        //if you have a header row, remove it here
+    
+        //remove header row
         rows.removeFirst()
         //now loop around each row, and split it into each of its columns
         for row in rows {
             let columns = row.components(separatedBy: ",")
 
             //check that we have enough columns
-            if columns.count == 6 {
+            if columns.count == 7 {
                 let day = Int16(columns[0]) ?? 0
                 let reps = Int16(columns[1]) ?? 0
                 let sets = Int16(columns[2]) ?? 0
                 let fractionOfMax = Float(columns[3]) ?? 0
                 let lift = columns[4]
                 let weekNumber = Int16(columns[5]) ?? 0
+                let needsWarmups = Bool(columns[6]) ?? true
 
-                let workout = Workout(context: moc)
-                workout.program_id = program_id
-                workout.workout_id = UUID().uuidString
-                workout.day = day
-                workout.reps = reps
-                workout.sets = sets
-                workout.fractionOfMax = fractionOfMax
-                workout.lift = lift
-                workout.weekNumber = weekNumber
-                workout.setWorkoutDate(startDate: startDate)
-                workout.setWorkoutWeight(maxesDict: maxesDict)
+                let exercise = Exercise(context: moc)
+                exercise.programId = programId
+                exercise.workoutId = programId + String(day)
+                exercise.day = day
+                exercise.reps = reps
+                exercise.sets = sets
+                exercise.fractionOfMax = fractionOfMax
+                exercise.lift = lift
+                exercise.weekNumber = weekNumber
+                exercise.needsWarmups = needsWarmups
+                exercise.setExerciseDate(startDate: startDate)
+                exercise.setExerciseWeight(maxesDict: maxesDict)
                 //workout.addWorkoutToCalendar()
-                workouts.append(workout)
+                exercises.append(exercise)
             }
-            // save newly created workout objects
+            // save newly created exercise objects
             do {
                 try moc.save()
             } catch {
                 fatalError("Failure to save context: \(error)")
             }
         }
-    return workouts
+    return exercises
     }
 
-func fetchWorkoutsFromCoreData(moc: NSManagedObjectContext)  -> [Workout] {
-    let workoutsFetch = Workout.createFetchRequest()
+
+func getWorkoutsFromExercises(exercises: [Exercise], moc: NSManagedObjectContext) -> [Workout] {
+    var exercisesByExerciseId: [String:[Exercise]] = [:]
+    var workouts: [Workout] = []
+    for exercise in exercises {
+        if exercisesByExerciseId.keys.contains(exercise.workoutId){
+            exercisesByExerciseId[exercise.workoutId]!.append(exercise)
+        }
+        else {
+            exercisesByExerciseId[exercise.workoutId] = [exercise]
+        }
+    }
+    for (workoutId, array_of_exercises) in exercisesByExerciseId{
+        workouts.append(Workout(exercises: array_of_exercises, workoutId: workoutId, moc: moc))
+    }
+    return workouts
+        
+}
+
+func fetchExercisesFromCoreData(moc: NSManagedObjectContext)  -> [Exercise] {
+    let exercisesFetch = Exercise.createFetchRequest()
 
     do {
-        let fetchedWorkouts = try moc.fetch(workoutsFetch)
-        return fetchedWorkouts
+        let fetchedExercises = try moc.fetch(exercisesFetch)
+        return fetchedExercises
     } catch {
-        fatalError("Failed to fetch workouts: \(error)")
+        fatalError("Failed to fetch exercises: \(error)")
     }
 }
 
-func fetchWorkoutFromCoreDataByWorkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Workout? {
-    let workoutsFetch = Workout.createFetchRequest()
-    workoutsFetch.predicate = NSPredicate(format: "workout_id == %@", workoutId)
+func fetchExerciseFromCoreDataByworkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Exercise? {
+    let exercisesFetch = Exercise.createFetchRequest()
+    exercisesFetch.predicate = NSPredicate(format: "workoutId == %@", workoutId)
     do {
-        let fetchedWorkouts = try moc.fetch(workoutsFetch)
-        print(fetchedWorkouts)
-        if fetchedWorkouts.isEmpty {
+        let fetchedExercises = try moc.fetch(exercisesFetch)
+        if fetchedExercises.isEmpty {
             return nil
         } else {
-        return fetchedWorkouts[0]
+        return fetchedExercises[0]
         }
     } catch {
-        fatalError("Failed to fetch workouts: \(error)")
+        fatalError("Failed to fetch exercises: \(error)")
     }
 }
 
 
-func fetchWorkoutFromURLQuery(moc: NSManagedObjectContext, url: URL) -> Workout? {
-    let workout = fetchWorkoutFromCoreDataByWorkoutId(
+func fetchExerciseFromURLQuery(moc: NSManagedObjectContext, url: URL) -> Exercise? {
+    let exercise = fetchExerciseFromCoreDataByworkoutId(
         moc: moc,
         workoutId: url.query ?? "none"
     ) ?? nil
-    return workout
+    return exercise
 }
 
 struct Maxes {
     var bench: Float
     var deadLift: Float
     var squat: Float
+    var frontSquat: Float
+    var dip: Float
+    var pullUp: Float
     
     var dictionary: [String: Float] {
         return ["bench": bench,
                 "deadLift": deadLift,
                 "squat": squat,
+                "frontSquat": frontSquat,
+                "dip": dip,
+                "pullUp": pullUp,
                 "none": 0.0
         ]
         }
@@ -215,17 +214,21 @@ struct ContentView: View {
                 let maxes = Maxes(
                     bench: Float(bench_max) ?? 0.0,
                     deadLift: Float(deadlift_max) ?? 0.0,
-                    squat: Float(squat_max) ?? 0.0
+                    squat: Float(squat_max) ?? 0.0,
+                    frontSquat: 0.7 * (Float(squat_max) ?? 0.0),
+                    dip: 0.5 * (Float(bench_max) ?? 0.0),
+                    pullUp: 0.5 * (Float(bench_max) ?? 0.0)
                 )
                 
                 // delete once we have a date picker
                 let startDate = Date()
                 
-                var workouts = convertTemplateCSVIntoArrayOfWorkouts(
+                var exercises = convertTemplateCSVIntoArrayOfExercises(
                     maxes: maxes,
                     startDate: startDate,
                     moc: managedObjectContext
                 )
+                var workouts = getWorkoutsFromExercises(exercises: exercises, moc: managedObjectContext)
                 // if we want to fetch saved workouts use this!
                 //var workouts = fetchWorkoutsFromCoreData(moc: managedObjectContext)
                 
@@ -234,9 +237,9 @@ struct ContentView: View {
         
                 addWorkoutsToCalendar(workouts: workouts)
                 for workout in workouts{
-                    print(workout.day, workout.lift, workout.weight, workout.day, workout.date, workout.workout_id)
+                    print(workout.date, workout.getWorkoutDescription())
                 }
-                result = "Workout generated! Check that Calendar"
+                result = "Program generated! Check that Calendar"
             }) {
                 // How the button looks like
                 // the order of modifiers is important
