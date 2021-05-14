@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Exercise" representedClassName="Exercise" syncable="YES">
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="-978278400" usesScalarValueType="NO"/>
+        <attribute name="day" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="fractionOfMax" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lift" attributeType="String" defaultValueString="none"/>
+        <attribute name="needsWarmups" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="programId" attributeType="String"/>
+        <attribute name="reps" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sets" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weekNumber" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="workoutId" attributeType="String" defaultValueString="None"/>
+    </entity>
+    <elements>
+        <element name="Exercise" positionX="-54" positionY="-9" width="128" height="208"/>
+    </elements>
+</model>
