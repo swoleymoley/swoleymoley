@@ -206,7 +206,6 @@ struct ContentView: View {
             //different style for demo
             TextField("enter your Deadlift Max", text: $deadlift_max).textFieldStyle(RoundedBorderTextFieldStyle())
             }
-            
             //heres to code for the calc button
             Button(action: {
                 // What to perform
@@ -229,6 +228,7 @@ struct ContentView: View {
                     moc: managedObjectContext
                 )
                 var workouts = getWorkoutsFromExercises(exercises: exercises, moc: managedObjectContext)
+                workouts[0].saveTCX()
                 // if we want to fetch saved workouts use this!
                 //var workouts = fetchWorkoutsFromCoreData(moc: managedObjectContext)
                 

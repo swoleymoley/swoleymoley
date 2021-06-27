@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import EventKit
+import TCXZpot_Swift
 
 class Workout {
     var workoutId: String
@@ -98,6 +99,72 @@ class Workout {
         return lifts.joined(separator:", ")
         
     }
+    
+    func saveTCX(){
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: self.date)
+        let month = calendar.component(.month, from: self.date)
+        let year = calendar.component(.year, from: self.date)
+        let hour = calendar.component(.hour, from: self.date)
+        let minute = calendar.component(.minute, from: self.date)
+        let timeWorkedOut = Double(self.exercises.count) * 1200
+        let caloriesBurned = Int((timeWorkedOut / 3600) * 200)
+        let db = TrainingCenterDatabase(
+                    activities:
+                        Activities(
+                            with:
+                                Activity(
+                                    id: TCXDate(day: day, month: month, year: year, hour: hour, minute: minute, second: 0)!,
+                                    laps: [
+                                            Lap(
+                                                startTime: TCXDate(day: day, month: month, year: year, hour: hour, minute: minute, second: 0)!,
+                                                totalTime: timeWorkedOut,
+                                                distance: 0,
+                                                calories: caloriesBurned,
+                                                intensity: .active,
+                                                triggerMethod: .manual,
+                                                tracks: Track(with:
+                                                                Trackpoint(
+                                                                    time: TCXDate(day: day, month: month, year: year, hour: hour, minute: minute, second: 0)!,
+                                                                    position: Position(latitude: 40.08556, longitude: 22.35861))
+                                                            )
+                                            )
+                                    ],
+                                    notes: Notes(text: self.getWorkoutDescription()),
+                                    creator: Device(
+                                                    name: "SwoleyMoley",
+                                                    unitID: 1,
+                                                    productID: 1234567,
+                                                    version: Version(versionMajor: 1, versionMinor: 0)
+                                            ),
+                                    sport: .other
+                                )
+                        ),
+                        author:
+                            Application(name: "SwoleyMoley",
+                                        build: Build(version: Version(versionMajor: 1, versionMinor: 0)),
+                                        languageID: "en",
+                                        partNumber: "123-45678-90"
+                            )
+                    )
+        
+        let fileManager = FileManager.default
+        do {
+            let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+            let fileURL = documentDirectory.appendingPathComponent("file_name.txt")
+            let serializer = FileSerializer()
+            db.serialize(to: serializer)
+            print("XXXXXX", fileURL)
+            try serializer.save(toPath : fileURL.path)
+        }
+            catch {
+                print("XXXXXX",  error)
+
+                print(error)
+        }
+
+    }
+        
     
 }
 

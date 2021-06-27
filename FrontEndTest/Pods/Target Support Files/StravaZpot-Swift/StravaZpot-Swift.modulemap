@@ -1,0 +1,6 @@
+framework module StravaZpot_Swift {
+  umbrella header "StravaZpot-Swift-umbrella.h"
+
+  export *
+  module * { export * }
+}

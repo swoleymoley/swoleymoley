@@ -1,0 +1,28 @@
+PODS:
+  - Alamofire (4.9.1)
+  - StravaZpot-Swift (1.0.6):
+    - Alamofire (~> 4.0)
+    - SwiftyJSON (~> 3.1)
+  - SwiftyJSON (3.1.4)
+  - TCXZpot-Swift (0.1.1)
+
+DEPENDENCIES:
+  - StravaZpot-Swift (~> 1.0.5)
+  - TCXZpot-Swift (~> 0.1.0)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - StravaZpot-Swift
+    - SwiftyJSON
+    - TCXZpot-Swift
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  StravaZpot-Swift: c7c31c5d65a2a5bbf944df48df54f62614b08c4a
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  TCXZpot-Swift: c2b23c112619636483dc7ca61f3dd63b4d7e7c0d
+
+PODFILE CHECKSUM: 47c33afebf0457967b7a843a38bc5a69a60c900c
+
+COCOAPODS: 1.10.1

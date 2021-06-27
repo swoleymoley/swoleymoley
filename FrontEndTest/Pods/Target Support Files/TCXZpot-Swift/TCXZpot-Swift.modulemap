@@ -1,0 +1,6 @@
+framework module TCXZpot_Swift {
+  umbrella header "TCXZpot-Swift-umbrella.h"
+
+  export *
+  module * { export * }
+}

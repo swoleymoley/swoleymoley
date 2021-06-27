@@ -1,0 +1,35 @@
+project 'FrontEndTest.xcodeproj'
+
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '11.0'
+
+target 'FrontEndTest' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for FrontEndTest
+	#pod 'SwiftyJSON', '4.0'
+	#pod 'Alamofire'
+	pod 'TCXZpot-Swift', '~> 0.1.0'
+	pod 'StravaZpot-Swift', '~> 1.0.5'
+
+  target 'FrontEndTestTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'FrontEndTestUITests' do
+    # Pods for testing
+  end
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if ['SwiftyJSON'].include? target.name
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.2'
+      end
+    end
+  end
+end
