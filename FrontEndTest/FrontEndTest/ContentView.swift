@@ -87,7 +87,9 @@ func getWorkoutsFromExercises(exercises: [Exercise], moc: NSManagedObjectContext
         }
     }
     for (workoutId, array_of_exercises) in exercisesByExerciseId{
-        workouts.append(Workout(exercises: array_of_exercises, workoutId: workoutId, moc: moc))
+        let workout = Workout(exercises: array_of_exercises, workoutId: workoutId, moc: moc)
+        workout.getExercisesWithWarmups()
+        workouts.append(workout)
     }
     return workouts
         
@@ -104,7 +106,7 @@ func fetchExercisesFromCoreData(moc: NSManagedObjectContext)  -> [Exercise] {
     }
 }
 
-func fetchExerciseFromCoreDataByworkoutId(moc: NSManagedObjectContext, workoutId: String)  -> Exercise? {
+func fetchExercisesFromCoreDataByworkoutId(moc: NSManagedObjectContext, workoutId: String)  -> [Exercise]? {
     let exercisesFetch = Exercise.createFetchRequest()
     exercisesFetch.predicate = NSPredicate(format: "workoutId == %@", workoutId)
     do {
@@ -112,7 +114,7 @@ func fetchExerciseFromCoreDataByworkoutId(moc: NSManagedObjectContext, workoutId
         if fetchedExercises.isEmpty {
             return nil
         } else {
-        return fetchedExercises[0]
+        return fetchedExercises
         }
     } catch {
         fatalError("Failed to fetch exercises: \(error)")
@@ -120,12 +122,12 @@ func fetchExerciseFromCoreDataByworkoutId(moc: NSManagedObjectContext, workoutId
 }
 
 
-func fetchExerciseFromURLQuery(moc: NSManagedObjectContext, url: URL) -> Exercise? {
-    let exercise = fetchExerciseFromCoreDataByworkoutId(
+func fetchExercisesFromURLQuery(moc: NSManagedObjectContext, url: URL) -> [Exercise]? {
+    let exercises = fetchExercisesFromCoreDataByworkoutId(
         moc: moc,
         workoutId: url.query ?? "none"
     ) ?? nil
-    return exercise
+    return exercises
 }
 
 struct Maxes {
@@ -159,10 +161,7 @@ struct SuperCustomTextFieldStyle: TextFieldStyle {
 }
 
 
-
-//this is where its happening
-struct ContentView: View {
-    @Binding var launchURL: URL
+struct ProgramBuilderView: View {
     //these are the variables hodling user input
     //im unsure how to make these global or accessible out this scope
     @State private var bench_max = ""
@@ -228,7 +227,7 @@ struct ContentView: View {
                     moc: managedObjectContext
                 )
                 var workouts = getWorkoutsFromExercises(exercises: exercises, moc: managedObjectContext)
-                workouts[0].saveTCX()
+                //workouts[0].saveTCX()
                 // if we want to fetch saved workouts use this!
                 //var workouts = fetchWorkoutsFromCoreData(moc: managedObjectContext)
                 
@@ -261,6 +260,71 @@ struct ContentView: View {
                 Text(result)
             }
             
+        }
+    }
+}
+
+
+struct SingleWorkoutView: View {
+    let launchURL: URL
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
+    var body: some View {
+        
+        let exercises = fetchExercisesFromURLQuery(
+            moc: managedObjectContext,
+            url: launchURL
+        )
+        
+        let workout = Workout(
+                exercises: exercises ?? [Exercise()],
+                workoutId: exercises?[0].workoutId ?? "No Exercise",
+                moc: managedObjectContext
+            )
+        List {
+                VStack{
+                Text(launchURL.absoluteString)
+                Text("")
+                Text(workout.getWorkoutDescription())
+            }
+            Button(action: {
+                // What to perform
+                print("I've been tapped")
+                workout.postToStrava()
+                
+            }) {
+                // How the button looks like
+                // the order of modifiers is important
+                Text("Push to Strava")
+                    .fontWeight(.bold)
+                    .font(.title)
+                    .padding()
+                    .background(Color.red)
+                    .cornerRadius(40)
+                    .foregroundColor(.white)
+                    .padding(5)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 40)
+                            .stroke(Color.red, lineWidth: 5)
+                    )
+            }
+    }
+    }
+}
+
+
+//this is where its happening
+struct ContentView: View {
+    @Binding var launchURL: URL
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.managedObjectContext) var managedObjectContext
+    //declares a view
+    var body: some View {
+        if launchURL.absoluteString.contains("view_workout"){
+            SingleWorkoutView(launchURL: launchURL)
+        } else {
+            ProgramBuilderView()
         }
     }
 }
