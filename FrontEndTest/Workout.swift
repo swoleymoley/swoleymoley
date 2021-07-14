@@ -10,6 +10,48 @@ import CoreData
 import EventKit
 import TCXZpot_Swift
 import StravaZpot_Swift
+import UIKit
+import SwiftUI
+
+//class delegate: AuthenticationDelegate {
+//    //var login_result:
+//    func authenticationViewController(_ authenticationViewController : AuthenticationViewController, didFinishWithCode code : String) {
+//        print("booooooty")
+//        let client = HTTPClientBuilder.authenticationClient(debug: true)
+//        var result : StravaResult<LoginResult>?
+//        AuthenticationAPI(client: client)
+//          .getToken(forApp: AppCredentials(clientID: 67811,
+//                                           clientSecret: "96b2106b4ce0ef412768a90e7032c2487d8014e6"),
+//                    withCode: "any_code")
+//            .execute {  result = $0 }
+//        print(result)
+//    }
+//}
+//
+//
+//struct AuthenticationView: UIViewControllerRepresentable {
+//    func makeUIViewController(context: Context) -> AuthenticationViewController {
+//        let login = StravaLogin(clientID: 67811,
+//                               redirectURI: "swoleymoley://swoleymoley.com",
+//                               approvalPrompt: ApprovalPrompt.auto,
+//                               accessScope: AccessScope.Write
+//        )
+//         let authenticationViewController = AuthenticationViewController()
+//         let authentication_delegate = delegate()
+//         authenticationViewController.url = login.makeURL()
+//         print("XXXXXXXXXXX")
+//         print(login.makeURL())
+//         authenticationViewController.redirectURL = "swoleymoley://swoleymoley.com"
+//         authenticationViewController.delegate = authentication_delegate
+//         authenticationViewController.title = "Login to Strava"
+//        return authenticationViewController
+//    }
+//    
+//    func updateUIViewController(_ uiViewController: AuthenticationViewController, context: Context) {
+//    }
+//}
+
+
 
 class Workout {
     var workoutId: String
@@ -95,36 +137,12 @@ class Workout {
         return lifts.joined(separator:", ")
         
     }
-    func postToStrava(){
-        class delegate: AuthenticationDelegate {
-            //var login_result:
-            func authenticationViewController(_ authenticationViewController : AuthenticationViewController, didFinishWithCode code : String) {
-                print("booooooty")
-                let client = HTTPClientBuilder.authenticationClient(debug: true)
-                var result : StravaResult<LoginResult>?
-                AuthenticationAPI(client: client)
-                  .getToken(forApp: AppCredentials(clientID: 67811,
-                                                   clientSecret: "96b2106b4ce0ef412768a90e7032c2487d8014e6"),
-                            withCode: "any_code")
-                    .execute {  result = $0 }
-                print(result)
-            }
-        }
+    func postToStrava() -> StravaLoginView {
         
-       let login = StravaLogin(clientID: 67811,
-                              redirectURI: "https://www.facebook.com/SwoleyMoleyFitness",
-                              approvalPrompt: ApprovalPrompt.force,
-                              accessScope: AccessScope.Write
-       )
-        let authenticationViewController = AuthenticationViewController()
-        let authentication_delegate = delegate()
-        authenticationViewController.url = login.makeURL()
-        authenticationViewController.redirectURL = "https://www.facebook.com/SwoleyMoleyFitness"
-        authenticationViewController.delegate = authentication_delegate
-        authenticationViewController.title = "Login to Strava"
-        authenticationViewController.webView(shouldStartLoadWith: login.makeURL(), navigationType: .other )
+        //authenticationViewController.webView(shouldStartLoadWith: login.makeURL(), navigationType: .other )
+        return StravaLoginView()
         //authentication_delegate.authenticationViewController(authenticationViewController, didFinishWithCode: "any_code")
-        print("end of push to strava")
+        //return authenticationViewController
     }
     func saveTCX(){
         let calendar = Calendar.current

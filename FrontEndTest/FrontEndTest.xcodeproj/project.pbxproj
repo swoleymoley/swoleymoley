@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		E1EA5D1334EBC4A728523220 /* Pods_FrontEndTest_FrontEndTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDE79E30CFAE9FA90716E15 /* Pods_FrontEndTest_FrontEndTestUITests.framework */; };
+		F20D96AF269BDDAE00274895 /* StravaLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20D96AE269BDDAE00274895 /* StravaLoginView.swift */; };
 		F2211BF8261FD7B800A2F6B1 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211BF7261FD7B800A2F6B1 /* PersistenceController.swift */; };
 		F2211C04261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */; };
 		F2211C05261FDBD200A2F6B1 /* Exercise+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2211C03261FDBD200A2F6B1 /* Exercise+CoreDataProperties.swift */; };
@@ -50,6 +51,7 @@
 		A6BCA081F38CF3CE06ED3EA5 /* Pods-FrontEndTest-FrontEndTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FrontEndTest-FrontEndTestUITests.release.xcconfig"; path = "Target Support Files/Pods-FrontEndTest-FrontEndTestUITests/Pods-FrontEndTest-FrontEndTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B1BB74DDE1B27EE7B8672F0F /* Pods-FrontEndTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FrontEndTest.debug.xcconfig"; path = "Target Support Files/Pods-FrontEndTest/Pods-FrontEndTest.debug.xcconfig"; sourceTree = "<group>"; };
 		BFDE79E30CFAE9FA90716E15 /* Pods_FrontEndTest_FrontEndTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FrontEndTest_FrontEndTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F20D96AE269BDDAE00274895 /* StravaLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StravaLoginView.swift; sourceTree = "<group>"; };
 		F2211BF7261FD7B800A2F6B1 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F2211C03261FDBD200A2F6B1 /* Exercise+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exercise+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -119,7 +121,6 @@
 				2E77E9D94127E4EF26042464 /* Pods-FrontEndTestTests.debug.xcconfig */,
 				F2A1AF3B08355502C293C797 /* Pods-FrontEndTestTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -135,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				F2211C1B2634FD9400A2F6B1 /* Workout.swift */,
+				F20D96AE269BDDAE00274895 /* StravaLoginView.swift */,
 				F2211C02261FDBD200A2F6B1 /* Exercise+CoreDataClass.swift */,
 				F2211C03261FDBD200A2F6B1 /* Exercise+CoreDataProperties.swift */,
 				F239E6BC261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld */,
@@ -440,6 +442,7 @@
 				F2211C1C2634FD9400A2F6B1 /* Workout.swift in Sources */,
 				FD8B7F5825E36D71007C7D4F /* ContentView.swift in Sources */,
 				F2211BF8261FD7B800A2F6B1 /* PersistenceController.swift in Sources */,
+				F20D96AF269BDDAE00274895 /* StravaLoginView.swift in Sources */,
 				FD8B7F5625E36D71007C7D4F /* FrontEndTestApp.swift in Sources */,
 				F239E6BE261AB1CF00C6C9A9 /* SwoleyMoleyDataModel.xcdatamodeld in Sources */,
 			);

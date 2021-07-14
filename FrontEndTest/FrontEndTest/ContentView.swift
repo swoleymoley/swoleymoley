@@ -14,6 +14,7 @@ import Foundation
 import EventKit
 import CoreData
 
+
 func convertTemplateCSVIntoArrayOfExercises(maxes: Maxes, startDate: Date, moc: NSManagedObjectContext)  -> [Exercise] {
     var exercises = [Exercise]()
     let programId = UUID().uuidString
@@ -291,7 +292,7 @@ struct SingleWorkoutView: View {
             Button(action: {
                 // What to perform
                 print("I've been tapped")
-                workout.postToStrava()
+                //workout.postToStrava()
                 
             }) {
                 // How the button looks like
@@ -314,6 +315,35 @@ struct SingleWorkoutView: View {
 }
 
 
+struct SingleWorkoutNavigationView: View {
+    let launchURL: URL
+    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
+    var body: some View {
+        NavigationView {
+                    let exercises = fetchExercisesFromURLQuery(
+                        moc: managedObjectContext,
+                        url: launchURL
+                    )
+                    
+                    let workout = Workout(
+                            exercises: exercises ?? [Exercise()],
+                            workoutId: exercises?[0].workoutId ?? "No Exercise",
+                            moc: managedObjectContext
+                        )
+                    VStack {
+                        Text("Navigation view")
+                        NavigationLink(destination: workout.postToStrava()) {
+                            Text("Push to Strava")
+                        }
+        
+                    }
+            
+        }
+}
+}
+
 //this is where its happening
 struct ContentView: View {
     @Binding var launchURL: URL
@@ -322,7 +352,7 @@ struct ContentView: View {
     //declares a view
     var body: some View {
         if launchURL.absoluteString.contains("view_workout"){
-            SingleWorkoutView(launchURL: launchURL)
+            SingleWorkoutNavigationView(launchURL: launchURL)
         } else {
             ProgramBuilderView()
         }
