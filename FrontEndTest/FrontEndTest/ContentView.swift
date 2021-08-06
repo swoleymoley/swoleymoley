@@ -267,82 +267,21 @@ struct ProgramBuilderView: View {
 
 
 struct SingleWorkoutView: View {
-    let launchURL: URL
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @State var workout: Workout?
     
     var body: some View {
         
-        let exercises = fetchExercisesFromURLQuery(
-            moc: managedObjectContext,
-            url: launchURL
-        )
-        
-        let workout = Workout(
-                exercises: exercises ?? [Exercise()],
-                workoutId: exercises?[0].workoutId ?? "No Exercise",
-                moc: managedObjectContext
-            )
         List {
                 VStack{
-                Text(launchURL.absoluteString)
+                    Text(workout?.getLifts() ?? "")
                 Text("")
-                Text(workout.getWorkoutDescription())
-            }
-            Button(action: {
-                // What to perform
-                print("I've been tapped")
-                //workout.postToStrava()
-                
-            }) {
-                // How the button looks like
-                // the order of modifiers is important
-                Text("Push to Strava")
-                    .fontWeight(.bold)
-                    .font(.title)
-                    .padding()
-                    .background(Color.red)
-                    .cornerRadius(40)
-                    .foregroundColor(.white)
-                    .padding(5)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 40)
-                            .stroke(Color.red, lineWidth: 5)
-                    )
-            }
-    }
-    }
-}
-
-
-struct SingleWorkoutNavigationView: View {
-    let launchURL: URL
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.managedObjectContext) var managedObjectContext
-    
-    var body: some View {
-        NavigationView {
-                    let exercises = fetchExercisesFromURLQuery(
-                        moc: managedObjectContext,
-                        url: launchURL
-                    )
-                    
-                    let workout = Workout(
-                            exercises: exercises ?? [Exercise()],
-                            workoutId: exercises?[0].workoutId ?? "No Exercise",
-                            moc: managedObjectContext
-                        )
-                    VStack {
-                        Text("Navigation view")
-                        NavigationLink(destination: workout.postToStrava()) {
-                            Text("Push to Strava")
-                        }
-        
-                    }
-            
+                Text(workout?.getWorkoutDescription() ?? "")
+                StravaLoginView(workout: $workout)
+                }
         }
+    }
 }
-}
+
 
 //this is where its happening
 struct ContentView: View {
@@ -352,7 +291,17 @@ struct ContentView: View {
     //declares a view
     var body: some View {
         if launchURL.absoluteString.contains("view_workout"){
-            SingleWorkoutNavigationView(launchURL: launchURL)
+            let exercises = fetchExercisesFromURLQuery(
+                        moc: managedObjectContext,
+                        url: launchURL
+            )
+            
+            let workout = Workout(
+                        exercises: exercises ?? [Exercise()],
+                        workoutId: exercises?[0].workoutId ?? "No Exercise",
+                        moc: managedObjectContext
+            )
+            SingleWorkoutView(workout: workout)
         } else {
             ProgramBuilderView()
         }

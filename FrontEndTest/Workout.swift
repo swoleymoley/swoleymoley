@@ -128,7 +128,6 @@ class Workout {
         return workoutDescriptionHelper(exercises: self.exercises)
     }
     
-    
     func getLifts() -> String {
         var lifts: Set<String> = []
         for exercise in self.exercises {
@@ -137,13 +136,10 @@ class Workout {
         return lifts.joined(separator:", ")
         
     }
-    func postToStrava() -> StravaLoginView {
-        
-        //authenticationViewController.webView(shouldStartLoadWith: login.makeURL(), navigationType: .other )
-        return StravaLoginView()
-        //authentication_delegate.authenticationViewController(authenticationViewController, didFinishWithCode: "any_code")
-        //return authenticationViewController
-    }
+//    func postToStrava() -> StravaLoginView {
+//                return StravaLoginView()
+//    }
+    
     func saveTCX(){
         let calendar = Calendar.current
         let day = calendar.component(.day, from: self.date)
